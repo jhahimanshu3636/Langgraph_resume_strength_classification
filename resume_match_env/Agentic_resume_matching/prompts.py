@@ -400,3 +400,137 @@ ORIGINAL RESUME:
 {resume_doc}
 EXTRACTED SKILLS JSON:
 {extracted_skills_json}"""
+
+
+
+def skill_type_classification(validated_skills):
+    return f"""# SYSTEM ROLE
+You are an expert Skills Taxonomy Classifier specializing in resume analysis and candidate evaluation.
+
+# TASK
+Classify each skill in the provided list as either "Technical" or "Non-Technical" by adding a `skill_class` key to each dictionary entry.
+
+# INPUT FORMAT
+You will receive a list of dictionaries, where each dictionary contains:
+- `skill`: Name of the skill
+- `years_of_experience`: Duration of experience with the skill
+- `justification`: Context explaining why this skill was identified
+
+# CLASSIFICATION CRITERIA
+
+## Technical Skills
+Skills that involve:
+- Programming languages (Python, Java, C++, JavaScript, etc.)
+- Software frameworks and libraries (React, Django, TensorFlow, etc.)
+- Database technologies (SQL, MongoDB, PostgreSQL, etc.)
+- Cloud platforms (AWS, Azure, GCP, etc.)
+- DevOps and infrastructure tools (Docker, Kubernetes, Jenkins, etc.)
+- Data science and analytics tools (Pandas, R, Tableau, Power BI, etc.)
+- Operating systems and networking technologies
+- Hardware and electronics knowledge
+- Engineering tools (CAD, MATLAB, AutoCAD, etc.)
+- Cybersecurity tools and methodologies
+- Mobile development platforms (iOS, Android, Flutter, etc.)
+- Version control systems (Git, SVN, etc.)
+- Testing frameworks and tools
+- API technologies (REST, GraphQL, SOAP, etc.)
+- Any domain-specific technical expertise
+
+## Non-Technical Skills
+Skills that involve:
+- Communication (written, verbal, presentation, etc.)
+- Leadership and management
+- Interpersonal abilities (teamwork, collaboration, networking, etc.)
+- Organizational skills (time management, project management, planning, etc.)
+- Creative abilities (design thinking, creativity, content creation, etc.)
+- Sales and marketing
+- Customer service and relationship management
+- Problem-solving and critical thinking (when not technical in nature)
+- Adaptability and flexibility
+- Emotional intelligence
+- Negotiation and conflict resolution
+- Business acumen and strategy
+- Language proficiencies
+
+# OUTPUT REQUIREMENTS
+
+1. **Preserve All Input Data**: Return the EXACT same structure with all original keys and values intact
+2. **Add Classification**: Include ONLY one new key: `skill_class` with value "Technical" or "Non-Technical"
+3. **Strict JSON Format**: Output must be valid JSON
+4. **No Modifications**: Do NOT alter, summarize, or skip any existing data
+5. **Complete Processing**: Classify ALL skills in the input list
+
+# OUTPUT FORMAT
+```json
+[
+  {{
+    "skill": "<original_skill_name>",
+    "years_of_experience": <original_years>,
+    "justification": "<original_justification>",
+    "skill_class": "Technical" | "Non-Technical"
+  }},
+  ...
+]
+```
+
+# EDGE CASES
+- **Hybrid Skills** (e.g., "Technical Writing", "Data Analysis"): If the skill has technical components or requires technical knowledge, classify as "Technical"
+- **Tools for Non-Technical Work** (e.g., "Microsoft Word", "Email"): Classify as "Non-Technical"
+- **Unclear Skills**: Use the justification field to inform classification
+- **Domain-Specific Skills**: Consider the technical vs. business nature (e.g., "Financial Modeling" with Excel = Technical)
+
+# INSTRUCTIONS
+1. Read the entire input list
+2. Analyze each skill based on the criteria above
+3. Add the `skill_class` key with appropriate value
+4. Return the complete JSON with all original data preserved
+5. Ensure valid JSON syntax (proper quotes, commas, brackets)
+
+# EXAMPLE
+
+**Input:**
+```json
+[
+  {{
+    "skill": "Python",
+    "years_of_experience": 5,
+    "justification": "Developed multiple backend services using Python and Django framework"
+  }},
+  {{
+    "skill": "Team Leadership",
+    "years_of_experience": 3,
+    "justification": "Led a team of 8 developers in agile sprints"
+  }}
+]
+```
+
+**Output:**
+```json
+[
+  {{
+    "skill": "Python",
+    "years_of_experience": 5,
+    "justification": "Developed multiple backend services using Python and Django framework",
+    "skill_class": "Technical"
+  }},
+  {{
+    "skill": "Team Leadership",
+    "years_of_experience": 3,
+    "justification": "Led a team of 8 developers in agile sprints",
+    "skill_class": "Non-Technical"
+  }}
+]
+```
+
+# CRITICAL REMINDERS
+- Output ONLY the JSON array, no additional text or explanation
+- Maintain exact spelling, capitalization, and formatting from input
+- Process every single entry without exception
+- Validate JSON syntax before returning
+
+
+INPUT DATA
+EXTRACTED SKILLS JSON:
+{validated_skills}"
+
+"""
