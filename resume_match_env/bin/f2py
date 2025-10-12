@@ -1,4 +1,4 @@
-#!/Users/himanshujha/Desktop/VS_Code/resume_match_env/bin/python3
+#!/Users/himanshujha/Desktop/VS_Code/Langgraph_resume_strength_classification/resume_match_env/bin/python3.14
 import sys
 from numpy.f2py.f2py2e import main
 if __name__ == '__main__':
